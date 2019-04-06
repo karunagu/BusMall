@@ -8,6 +8,8 @@ function SaleItem(name, filepath) {
   this.name = name;
   this.filepath = filepath;
   this.justshown = false;
+  this.prevShown = false;
+  this.totalShown =0;
   SaleItem.allItems.push(this);
 }
 
@@ -38,20 +40,47 @@ new SaleItem('wine-glass', 'img/wine-glass.jpg');
 var imgContainer = document.getElementById('item-pic');
 var imgContainer2 = document.getElementById('item-pic2');
 var imgContainer3 = document.getElementById('item-pic3');
-imgContainer.addEventListener('click', randomItem);
-imgContainer2.addEventListener('click', randomItem);
-imgContainer3.addEventListener('click', randomItem);
+imgContainer.addEventListener('click', itemClick);
+imgContainer2.addEventListener('click', itemClick);
+imgContainer3.addEventListener('click', itemClick);
 
 // display random Item images - 3
 function randomItem() {
   var randomIdx = Math.floor(Math.random() * SaleItem.allItems.length);
-  imgContainer.src = SaleItem.allItems[randomIdx].filepath;
+  while ((SaleItem.allItems[randomIdx].justshown === true) || (SaleItem.allItems[randomIdx].prevShown === true)) {
+    randomIdx = Math.floor(Math.random() * SaleItem.allItems.length);
+  }
   SaleItem.allItems[randomIdx].justshown = true;
-  randomIdx = Math.floor(Math.random() * SaleItem.allItems.length);
-  imgContainer2.src = SaleItem.allItems[randomIdx].filepath;
-  SaleItem.allItems[randomIdx].justshown = true;
-  randomIdx = Math.floor(Math.random() * SaleItem.allItems.length);
-  imgContainer3.src = SaleItem.allItems[randomIdx].filepath;
-  SaleItem.allItems[randomIdx].justshown = true;
+  SaleItem.allItems[randomIdx].totalShown += 1;
+  return randomIdx;
 }
-randomItem();
+
+
+// get random item that was not justshown
+function nextThreeItems() {
+  var firstItemNum = randomItem();
+  imgContainer.src = SaleItem.allItems[firstItemNum].filepath;
+  var secondItemNum = randomItem();
+  imgContainer2.src = SaleItem.allItems[secondItemNum].filepath;
+  var thirdItemNum = randomItem();
+  imgContainer3.src = SaleItem.allItems[thirdItemNum].filepath;
+  SaleItem.allItems[firstItemNum].justshown =false;
+  SaleItem.allItems[secondItemNum].justshown =false;
+  SaleItem.allItems[thirdItemNum].justshown =false;
+  resetPrevShown();
+  SaleItem.allItems[firstItemNum].prevShown =true;
+  SaleItem.allItems[secondItemNum].prevShown =true;
+  SaleItem.allItems[thirdItemNum].prevShown =true;
+}
+
+function resetPrevShown() {
+  for (var i = 0;i<SaleItem.allItems.length;i++){
+    SaleItem.allItems[i].prevShown =false;
+  }
+}
+
+function itemClick() {
+  nextThreeItems();
+}
+
+nextThreeItems();
