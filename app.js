@@ -2,6 +2,7 @@
 
 //  Array to hold all items
 SaleItem.allItems = [];
+var clickCount = 0;
 
 // create objects
 function SaleItem(name, filepath) {
@@ -58,19 +59,25 @@ function randomItem() {
 
 // get random item that was not justshown
 function nextThreeItems() {
-  var firstItemNum = randomItem();
-  imgContainer.src = SaleItem.allItems[firstItemNum].filepath;
-  var secondItemNum = randomItem();
-  imgContainer2.src = SaleItem.allItems[secondItemNum].filepath;
-  var thirdItemNum = randomItem();
-  imgContainer3.src = SaleItem.allItems[thirdItemNum].filepath;
-  SaleItem.allItems[firstItemNum].justshown =false;
-  SaleItem.allItems[secondItemNum].justshown =false;
-  SaleItem.allItems[thirdItemNum].justshown =false;
-  resetPrevShown();
-  SaleItem.allItems[firstItemNum].prevShown =true;
-  SaleItem.allItems[secondItemNum].prevShown =true;
-  SaleItem.allItems[thirdItemNum].prevShown =true;
+  if (clickCount < 25) {
+    var firstItemNum = randomItem();
+    imgContainer.src = SaleItem.allItems[firstItemNum].filepath;
+    var secondItemNum = randomItem();
+    imgContainer2.src = SaleItem.allItems[secondItemNum].filepath;
+    var thirdItemNum = randomItem();
+    imgContainer3.src = SaleItem.allItems[thirdItemNum].filepath;
+    SaleItem.allItems[firstItemNum].justshown =false;
+    SaleItem.allItems[secondItemNum].justshown =false;
+    SaleItem.allItems[thirdItemNum].justshown =false;
+    resetPrevShown();
+    SaleItem.allItems[firstItemNum].prevShown =true;
+    SaleItem.allItems[secondItemNum].prevShown =true;
+    SaleItem.allItems[thirdItemNum].prevShown =true;
+  }
+  else {
+    console.log('Number of clicks ', clickCount);
+  }
+  clickCount++;
 }
 
 function resetPrevShown() {
@@ -83,7 +90,11 @@ function itemClick() {
   // console.log('imgContainer.src',imgContainer.src);
   // var ind = SaleItem.allItems.findIndex(x => x.includes(imgContainer.src) === true);
   // console.log('ind',ind);
+  // clickCount++;
   nextThreeItems();
+  console.log(clickCount);
 }
 
 nextThreeItems();
+
+
