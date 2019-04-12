@@ -80,6 +80,9 @@ function resetPrevShown() {
 }
 
 function itemClick() {
+  // console.log('imgContainer.src',imgContainer.src);
+  // var ind = SaleItem.allItems.findIndex(x => x.includes(imgContainer.src) === true);
+  // console.log('ind',ind);
   nextThreeItems();
 }
 
